@@ -1,16 +1,14 @@
 package com.varelait.springEmployeeDB.service.department.entities;
 
 import jakarta.annotation.Generated;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table
 public class Department {
 
     @Id
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String department;
     private String description;

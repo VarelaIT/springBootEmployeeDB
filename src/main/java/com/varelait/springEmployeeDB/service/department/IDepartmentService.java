@@ -1,6 +1,6 @@
 package com.varelait.springEmployeeDB.service.department;
 
-import com.varelait.springEmployeeDB.service.department.entities.Department;
+import com.varelait.springEmployeeDB.service.entities.Department;
 
 import java.util.List;
 

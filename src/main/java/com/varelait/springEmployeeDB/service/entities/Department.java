@@ -6,19 +6,17 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 @Entity
 @Table
 public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private int id;
-    @Getter
     @Setter
+    @Column(unique = true)
     private String department;
-    @Getter
     @Setter
     private String description;
 

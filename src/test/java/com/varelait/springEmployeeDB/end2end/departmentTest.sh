@@ -3,6 +3,12 @@ DEPARTMENT1="RRHH"
 DESCRIPTION1="Human resources"
 http -j post 127.0.0.1:8080/api/department department=$DEPARTMENT1 description="$DESCRIPTION1"
 
+echo "updating a valid department"
+http -j patch 127.0.0.1:8080/api/department id=1 department="RD" description="$DESCRIPTION1"
+
+echo "updating an invalid department"
+http -j patch 127.0.0.1:8080/api/department id=0 department=$DEPARTMENT1 description="$DESCRIPTION1"
+
 echo "Getting departments"
 http get 127.0.0.1:8080/api/department?limit=10&offset=1
 

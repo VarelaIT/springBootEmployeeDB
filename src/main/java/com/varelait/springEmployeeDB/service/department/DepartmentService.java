@@ -2,14 +2,17 @@ package com.varelait.springEmployeeDB.service.department;
 
 import com.varelait.springEmployeeDB.persistence.IDepartmentRepository;
 import com.varelait.springEmployeeDB.service.entities.Department;
+import com.varelait.springEmployeeDB.service.entities.DepartmentDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j //logger interface annotation
 @Service
-public class DepartmentService extends com.varelait.springEmployeeDB.service.Service implements IDepartmentService{
+public class DepartmentService implements IDepartmentService{
 
     private final IDepartmentRepository departmentRepository;
 
@@ -20,24 +23,22 @@ public class DepartmentService extends com.varelait.springEmployeeDB.service.Ser
 
     @Override
     public Optional<Department> delete(int id) {
-        try {
-            var department2Delete = departmentRepository.findById(id);
-            department2Delete.ifPresent(departmentRepository::delete);
-            return department2Delete;
-        }catch (Exception e){
-            this.logger.error(e.getMessage());
-        }
-        return Optional.empty();
+        var department2Delete = departmentRepository.findById(id);
+        department2Delete.ifPresent(departmentRepository::delete);
+        if (department2Delete.isEmpty())
+            log.warn("Trying to delete non existing element");
+        return department2Delete;
     }
 
     @Override
-    public Department edit(Department departmentRequest) {
-        Department department2Update= departmentRepository.getReferenceById(departmentRequest.getId());
-        if (department2Update != null) {
-            department2Update.setDepartment(departmentRequest.getDepartment());
-            department2Update.setDescription(departmentRequest.getDescription());
-            return departmentRepository.save(department2Update);
+    public Department update(DepartmentDto departmentRequest) {
+        Optional<Department> department2Update = departmentRepository.findById(departmentRequest.id);
+        if (department2Update.isPresent()){
+            department2Update.get().setDepartment(departmentRequest.department);
+            department2Update.get().setDescription(departmentRequest.description);
+            return departmentRepository.save(department2Update.get());
         }
+
         return null;
     }
 

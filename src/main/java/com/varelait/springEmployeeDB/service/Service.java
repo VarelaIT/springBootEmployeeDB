@@ -1,8 +1,6 @@
 package com.varelait.springEmployeeDB.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.varelait.springEmployeeDB.LoggerBase;
 
-public abstract class Service {
-    //protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+public abstract class Service extends LoggerBase {
 }

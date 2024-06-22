@@ -27,15 +27,12 @@ public class DepartmentEndpoint {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<Department>> delete(@PathVariable int id){
-        log.debug("Entre");
         Optional<Department> department = departmentService.delete(id);
-        log.debug("service done");
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         if (department.isPresent())
             status = HttpStatus.OK;
 
-        log.debug("sali");
        return new ResponseEntity<>(department, status);
     }
 

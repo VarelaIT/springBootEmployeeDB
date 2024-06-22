@@ -3,16 +3,14 @@ package com.varelait.springEmployeeDB.service.department;
 import com.varelait.springEmployeeDB.persistence.IDepartmentRepository;
 import com.varelait.springEmployeeDB.service.entities.Department;
 import com.varelait.springEmployeeDB.service.entities.DepartmentDto;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j //logger interface annotation
 @Service
-public class DepartmentService implements IDepartmentService{
+public class DepartmentService extends com.varelait.springEmployeeDB.service.Service implements IDepartmentService{
 
     private final IDepartmentRepository departmentRepository;
 
@@ -26,7 +24,7 @@ public class DepartmentService implements IDepartmentService{
         var department2Delete = departmentRepository.findById(id);
         department2Delete.ifPresent(departmentRepository::delete);
         if (department2Delete.isEmpty())
-            log.warn("Trying to delete non existing element");
+            logger.warn("Trying to delete non existing element");
         return department2Delete;
     }
 

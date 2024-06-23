@@ -19,6 +19,29 @@ public class UserService extends Service implements IUserService {
     public UserService(IUserRepository userRepository){
         this.userRepository = userRepository;
     }
+
+    private UserEntity findByEmail(String email){
+       return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserResponse authenticate(UserDTO userRequest){
+        UserEntity user = findByEmail(userRequest.email);
+        if (user.comparePasswd(userRequest.password))
+            return new UserResponse(user.getId(), user.getEmail());
+
+        return null;
+    }
+
+    @Override
+    public UserResponse find(String email){
+        UserEntity user = findByEmail(email);
+        if (user == null)
+            return null;
+
+        return new UserResponse(user.getId(), user.getEmail());
+    }
+
     @Override
     public UserResponse create(UserDTO user) {
         UserEntity newUser = new UserEntity(user.email, user.password);

@@ -45,7 +45,9 @@ public class UserEntity {
         this.hash = hashPassword(password);
     }
     public boolean comparePasswd(String password){
-        return true;
+        PasswordEncoder encoder =
+                PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return encoder.matches(password, this.hash);
     }
 
 }

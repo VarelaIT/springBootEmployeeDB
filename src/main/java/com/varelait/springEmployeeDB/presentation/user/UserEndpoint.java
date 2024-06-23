@@ -23,6 +23,17 @@ public class UserEndpoint {
         this.userService = userService;
     }
 
+    @PostMapping("/auth")
+    public ResponseEntity<UserResponse> authenticate(@Valid @RequestBody UserDTO userRequest){
+        UserResponse user = userService.authenticate(userRequest);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        if (user != null)
+            status = HttpStatus.OK;
+
+        return new ResponseEntity<>(user, status);
+    }
+
     @PostMapping
     public ResponseEntity<UserResponse> create(@Valid @RequestBody UserDTO userRequest){
         UserResponse user = userService.create(userRequest);

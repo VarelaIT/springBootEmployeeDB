@@ -3,6 +3,7 @@ package com.varelait.springEmployeeDB.service.entities;
 import jakarta.annotation.Generated;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +17,10 @@ public class Department {
     private int id;
     @Setter
     @Column(unique = true)
+    @NotNull(message = "This property can not be null.")
     private String department;
     @Setter
+    @NotNull(message = "This property can not be null.")
     private String description;
 
     public Department(){}

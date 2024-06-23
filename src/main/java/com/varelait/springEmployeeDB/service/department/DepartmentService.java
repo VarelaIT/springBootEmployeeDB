@@ -2,7 +2,8 @@ package com.varelait.springEmployeeDB.service.department;
 
 import com.varelait.springEmployeeDB.persistence.IDepartmentRepository;
 import com.varelait.springEmployeeDB.service.entities.Department;
-import com.varelait.springEmployeeDB.service.entities.DepartmentDto;
+import com.varelait.springEmployeeDB.service.entities.DepartmentDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class DepartmentService extends com.varelait.springEmployeeDB.service.Ser
     }
 
     @Override
-    public Department update(DepartmentDto departmentRequest) {
+    public Department update(@Valid DepartmentDTO departmentRequest) {
         Optional<Department> department2Update = departmentRepository.findById(departmentRequest.id);
         if (department2Update.isPresent()){
             department2Update.get().setDepartment(departmentRequest.department);

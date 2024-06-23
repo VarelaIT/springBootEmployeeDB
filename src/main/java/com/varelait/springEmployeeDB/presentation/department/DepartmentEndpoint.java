@@ -2,8 +2,8 @@ package com.varelait.springEmployeeDB.presentation.department;
 
 import com.varelait.springEmployeeDB.service.department.DepartmentService;
 import com.varelait.springEmployeeDB.service.entities.Department;
-import com.varelait.springEmployeeDB.service.entities.DepartmentDto;
-import lombok.extern.slf4j.Slf4j;
+import com.varelait.springEmployeeDB.service.entities.DepartmentDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/department")
 public class DepartmentEndpoint {
@@ -37,7 +36,7 @@ public class DepartmentEndpoint {
     }
 
     @PatchMapping
-    public ResponseEntity<Department> update(@RequestBody DepartmentDto departmentRequest){
+    public ResponseEntity<Department> update(@Valid @RequestBody DepartmentDTO departmentRequest){
         Department department = departmentService.update(departmentRequest);
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -48,7 +47,7 @@ public class DepartmentEndpoint {
     }
 
     @PostMapping
-    public ResponseEntity<Department> create(@RequestBody Department departmentRequest){
+    public ResponseEntity<Department> create(@Valid @RequestBody Department departmentRequest){
         Department department = departmentService.create(departmentRequest);
         HttpStatus status = HttpStatus.BAD_REQUEST;
 

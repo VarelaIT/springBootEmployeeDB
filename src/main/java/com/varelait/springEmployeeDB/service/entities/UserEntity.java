@@ -28,7 +28,6 @@ public class UserEntity {
         this.email = email;
         this.hash = hashPassword(password);
     }
-
     public UserEntity(String email, String hash, int id){
         this.email = email;
         this.hash = hash;
@@ -44,8 +43,11 @@ public class UserEntity {
     public void setPassword(String password){
         this.hash = hashPassword(password);
     }
+
     public boolean comparePasswd(String password){
-        return true;
+        PasswordEncoder encoder =
+                PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return encoder.matches(password, this.hash);
     }
 
 }

@@ -1,91 +1,35 @@
 package com.varelait.springEmployeeDB;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.support.GenericConversionService;
-import org.springframework.core.serializer.Deserializer;
-import org.springframework.core.serializer.Serializer;
-import org.springframework.core.serializer.support.DeserializingConverter;
-import org.springframework.core.serializer.support.SerializingConverter;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
-import org.springframework.session.config.SessionRepositoryCustomizer;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionOperations;
+import org.springframework.transaction.support.TransactionTemplate;
 
-@Configuration(proxyBeanMethods = false)
-public class SessionConfig implements BeanClassLoaderAware {
+import javax.sql.DataSource;
 
-    private static final String CREATE_SESSION_ATTRIBUTE_QUERY = """
-			INSERT INTO %TABLE_NAME%_ATTRIBUTES (SESSION_PRIMARY_ID, ATTRIBUTE_NAME, ATTRIBUTE_BYTES)
-			VALUES (?, ?, encode(?, 'escape')::jsonb)
-			""";
+@Configuration
+@EnableJdbcHttpSession
+public class SessionConfig {
 
-    private static final String UPDATE_SESSION_ATTRIBUTE_QUERY = """
-			UPDATE %TABLE_NAME%_ATTRIBUTES
-			SET ATTRIBUTE_BYTES = encode(?, 'escape')::jsonb
-			WHERE SESSION_PRIMARY_ID = ?
-			AND ATTRIBUTE_NAME = ?
-			""";
+    private final DataSource dataSource;
+    private final PlatformTransactionManager transactionManager;
 
-    private ClassLoader classLoader;
+    public SessionConfig(DataSource dataSource, PlatformTransactionManager transactionManager) {
+        this.dataSource = dataSource;
+        this.transactionManager = transactionManager;
+    }
 
     @Bean
-    SessionRepositoryCustomizer<JdbcIndexedSessionRepository> customizer() {
-        return (sessionRepository) -> {
-            sessionRepository.setCreateSessionAttributeQuery(CREATE_SESSION_ATTRIBUTE_QUERY);
-            sessionRepository.setUpdateSessionAttributeQuery(UPDATE_SESSION_ATTRIBUTE_QUERY);
-        };
+    public JdbcIndexedSessionRepository personalSessionRepository() {
+        JdbcOperations jdbcOperations = new JdbcTemplate(dataSource);
+        TransactionOperations transactionOperations = new TransactionTemplate(transactionManager);
+        return new JdbcIndexedSessionRepository(jdbcOperations, transactionOperations);
     }
-
-    @Bean("springSessionConversionService")
-    public GenericConversionService springSessionConversionService(ObjectMapper objectMapper) {
-        ObjectMapper copy = objectMapper.copy();
-        copy.registerModules(SecurityJackson2Modules.getModules(this.classLoader));
-        GenericConversionService converter = new GenericConversionService();
-        converter.addConverter(Object.class, byte[].class, new SerializingConverter(new JsonSerializer(copy)));
-        converter.addConverter(byte[].class, Object.class, new DeserializingConverter(new JsonDeserializer(copy)));
-        return converter;
-    }
-
-    @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
-
-    static class JsonSerializer implements Serializer<Object> {
-
-        private final ObjectMapper objectMapper;
-
-        JsonSerializer(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
-        }
-
-        @Override
-        public void serialize(Object object, OutputStream outputStream) throws IOException {
-            this.objectMapper.writeValue(outputStream, object);
-        }
-
-    }
-
-    static class JsonDeserializer implements Deserializer<Object> {
-
-        private final ObjectMapper objectMapper;
-
-        JsonDeserializer(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
-        }
-
-        @Override
-        public Object deserialize(InputStream inputStream) throws IOException {
-            return this.objectMapper.readValue(inputStream, Object.class);
-        }
-
-    }
-
 }

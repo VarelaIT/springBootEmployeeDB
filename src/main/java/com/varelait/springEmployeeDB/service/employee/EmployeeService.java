@@ -5,14 +5,22 @@ import com.varelait.springEmployeeDB.service.Service;
 import com.varelait.springEmployeeDB.service.entities.Employee;
 import com.varelait.springEmployeeDB.service.entities.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+@org.springframework.stereotype.Service
 public class EmployeeService extends Service implements IEmployeeService{
 
+    private final IEmployeeRepository employeeRepository;
+
     @Autowired
-    private IEmployeeRepository employeeRepository;
+    public EmployeeService(IEmployeeRepository employeeRepository){
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public Employee create(EmployeeDTO employee) {
@@ -51,9 +59,8 @@ public class EmployeeService extends Service implements IEmployeeService{
     }
 
     @Override
-    public List<Employee> get(int limit, int offset) {
-        List<Employee> employees = employeeRepository.findAll();
-        return null;
+    public Page<Employee> get(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
     }
 
     @Override

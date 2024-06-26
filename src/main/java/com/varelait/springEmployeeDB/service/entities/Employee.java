@@ -22,7 +22,7 @@ public class Employee {
     private String fullname;
     @NotNull
     private Date birth;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id")
     private Department department;
 

@@ -1,5 +1,6 @@
 package com.varelait.springEmployeeDB.presentation.user;
 
+import com.varelait.springEmployeeDB.presentation.StatusEval;
 import com.varelait.springEmployeeDB.service.entities.UserResponse;
 import com.varelait.springEmployeeDB.service.entities.UserDTO;
 import com.varelait.springEmployeeDB.service.user.IUserService;
@@ -24,52 +25,46 @@ public class UserEndpoint {
         this.userService = userService;
     }
 
-    private HttpStatus statusState(Object object){
-        if (object == null)
-            return HttpStatus.BAD_REQUEST;
-        else
-            return HttpStatus.OK;
-    }
 
     @PostMapping("/auth")
     public ResponseEntity<UserResponse> authenticate(@Valid @RequestBody UserDTO userRequest, HttpSession session){
         UserResponse user = userService.authenticate(userRequest);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = StatusEval.object(user);
         return new ResponseEntity<>(user, status);
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> create(@Valid @RequestBody UserDTO userRequest){
         UserResponse user = userService.create(userRequest);
-        HttpStatus status = statusState(user);
+        HttpStatus status = StatusEval.object(user);
         return new ResponseEntity<>(user, status);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable int id, @Valid @RequestBody UserDTO userRequest ){
         UserResponse user = userService.update(id, userRequest);
-        HttpStatus status = statusState(user);
+        HttpStatus status = StatusEval.object(user);
         return new ResponseEntity<>(user, status);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> get(@PathVariable int id){
         var user = userService.get(id);
-        HttpStatus status = statusState(user);
+        HttpStatus status = StatusEval.object(user);
         return new ResponseEntity<>(user, status);
     }
 
     @GetMapping()
     public ResponseEntity<List<UserResponse>> get(){
         var user = userService.get();
-        HttpStatus status = statusState(user);
+        HttpStatus status = StatusEval.object(user);
         return new ResponseEntity<>(user, status);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserResponse> delete(@PathVariable int id){
         var user = userService.delete(id);
-        HttpStatus status = statusState(user);
+        HttpStatus status = StatusEval.object(user);
         return new ResponseEntity<>(user, status);
     }
 

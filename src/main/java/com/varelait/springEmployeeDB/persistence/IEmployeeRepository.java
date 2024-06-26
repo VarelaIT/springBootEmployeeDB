@@ -12,7 +12,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Optional<Employee> findByIdentification(String identification);
 
-    @Query("select e from Employee e where e.fullname like %:fullname% limit :limit")
-    List<Employee> findByFullname(@Param("fullname") String fullname, @Param("limit") int limit);
+    //@Query("select e from Employee e where e.fullname like %:fullname% limit :limit")
+    //List<Employee> findByFullname(@Param("fullname") String fullname, @Param("limit") int limit);
     List<Employee> findByFullnameContaining(String fullname);
 }

@@ -2,6 +2,8 @@ package com.varelait.springEmployeeDB.service.employee;
 
 import com.varelait.springEmployeeDB.service.entities.Employee;
 import com.varelait.springEmployeeDB.service.entities.EmployeeDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,6 +13,6 @@ public interface IEmployeeService {
     Employee getOne(int id);
     Employee getOne(String identification);
     List<Employee> get(String name);
-    List<Employee> get(int limit, int offset);
+    Page<Employee> get(Pageable pageable);
     Employee delete(int id);
 }

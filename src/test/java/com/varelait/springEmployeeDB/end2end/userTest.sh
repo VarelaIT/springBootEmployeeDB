@@ -1,7 +1,7 @@
 echo "creating a valid user."
 USER1="ismael@varelait.com"
 PASSWD1="alfalfas"
-http -j post 127.0.0.1:8080/api/user email="$USER1" password="$PASSWD1"
+http -j -h post 127.0.0.1:8080/api/user email="$USER1" password="$PASSWD1"
 
 echo "creating an invalid user"
 http -j post 127.0.0.1:8080/api/user password="$PASSWD1"

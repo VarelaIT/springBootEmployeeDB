@@ -40,21 +40,31 @@ public class EmployeeService extends Service implements IEmployeeService{
 
     @Override
     public Employee getOne(String identification) {
-        return null;
+        Optional<Employee> employee = employeeRepository.findByIdentification(identification);
+        return employee.orElse(null);
     }
 
     @Override
     public List<Employee> get(String name) {
-        return null;
+        int limit = 100;
+        return employeeRepository.findByFullnameContaining(name);
     }
 
     @Override
     public List<Employee> get(int limit, int offset) {
+        List<Employee> employees = employeeRepository.findAll();
         return null;
     }
 
     @Override
     public Employee delete(int id) {
+
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if (employee.isPresent()) {
+            employeeRepository.deleteById(id);
+            return employee.get();
+        }
+
         return null;
     }
 }

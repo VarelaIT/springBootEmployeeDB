@@ -35,13 +35,6 @@ public class UserEndpoint {
     public ResponseEntity<UserResponse> authenticate(@Valid @RequestBody UserDTO userRequest, HttpSession session){
         UserResponse user = userService.authenticate(userRequest);
         HttpStatus status = HttpStatus.BAD_REQUEST;
-
-        if (user != null)
-            status = HttpStatus.OK;
-
-        session.setAttribute("logged", true);
-        session.setAttribute("userEmail", user.email);
-        session.setAttribute("userid", user.id);
         return new ResponseEntity<>(user, status);
     }
 
@@ -53,12 +46,8 @@ public class UserEndpoint {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable int id, @Valid @RequestBody UserDTO userRequest, HttpSession session){
-        UserResponse user = null;
-
-        if ((boolean) session.getAttribute("logged"))
-            user = userService.update(id, userRequest);
-
+    public ResponseEntity<UserResponse> update(@PathVariable int id, @Valid @RequestBody UserDTO userRequest ){
+        UserResponse user = userService.update(id, userRequest);
         HttpStatus status = statusState(user);
         return new ResponseEntity<>(user, status);
     }

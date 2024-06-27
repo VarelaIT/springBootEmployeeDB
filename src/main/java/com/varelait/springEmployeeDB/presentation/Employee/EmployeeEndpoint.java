@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -52,6 +53,20 @@ public class EmployeeEndpoint {
         Page<Employee> employeePage = employeeService.get(pageRequest);
         HttpStatus status = StatusEval.object(employeePage);
         return new ResponseEntity<>(employeePage, status);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployees(@PathVariable int id){
+        Employee employee= employeeService.getOne(id);
+        HttpStatus status = StatusEval.object(employee);
+        return new ResponseEntity<>(employee, status);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Employee>> getEmployees(@PathVariable String name){
+        List<Employee> employees= employeeService.get(name);
+        HttpStatus status = StatusEval.object(employees);
+        return new ResponseEntity<>(employees, status);
     }
 
 }

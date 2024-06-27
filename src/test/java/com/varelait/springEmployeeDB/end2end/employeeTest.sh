@@ -14,3 +14,9 @@ http get 127.0.0.1:8080/api/employee
 
 echo "Getting employees page 1 size 3"
 http get "127.0.0.1:8080/api/employee?page=1&size=3"
+
+echo "Getting employee by id"
+http get 127.0.0.1:8080/api/employee/1
+
+echo "Getting employee by name pattern"
+http get 127.0.0.1:8080/api/employee/name/Doe

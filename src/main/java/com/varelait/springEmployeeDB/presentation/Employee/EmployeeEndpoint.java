@@ -22,6 +22,20 @@ public class EmployeeEndpoint {
         this.employeeService = employeeService;
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Employee> delete(@PathVariable int id){
+        Employee employee = employeeService.delete(id);
+        HttpStatus status = StatusEval.object(employee);
+        return new ResponseEntity<>(employee, status);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Employee> update(@PathVariable int id, @RequestBody EmployeeDTO employeeDTO){
+        Employee employee = employeeService.update(id, employeeDTO);
+        HttpStatus status = StatusEval.object(employee);
+        return new ResponseEntity<>(employee, status);
+    }
+
     @PostMapping
     public ResponseEntity<Employee> create(@RequestBody EmployeeDTO employeeDTO){
         Employee employee = employeeService.create(employeeDTO);

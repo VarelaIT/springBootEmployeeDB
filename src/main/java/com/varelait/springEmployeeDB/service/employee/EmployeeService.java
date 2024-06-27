@@ -1,7 +1,9 @@
 package com.varelait.springEmployeeDB.service.employee;
 
+import com.varelait.springEmployeeDB.persistence.IDepartmentRepository;
 import com.varelait.springEmployeeDB.persistence.IEmployeeRepository;
 import com.varelait.springEmployeeDB.service.Service;
+import com.varelait.springEmployeeDB.service.entities.Department;
 import com.varelait.springEmployeeDB.service.entities.Employee;
 import com.varelait.springEmployeeDB.service.entities.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +18,39 @@ import java.util.Optional;
 public class EmployeeService extends Service implements IEmployeeService{
 
     private final IEmployeeRepository employeeRepository;
+    private final IDepartmentRepository departmentRepository;
 
     @Autowired
-    public EmployeeService(IEmployeeRepository employeeRepository){
+    public EmployeeService(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository){
         this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     @Override
     public Employee create(EmployeeDTO employee) {
-        return employeeRepository.save(new Employee(employee.identification, employee.fullname, employee.birth, employee.department));
+        Department department = null;
+        if (employee.department != null && employee.department.id> 0) {
+            Optional<Department> persistedDepartment = departmentRepository.findById(employee.department.id);
+            if (persistedDepartment.isPresent())
+                department = persistedDepartment.get();
+        }
+        return employeeRepository.save(new Employee(employee.identification, employee.fullname, employee.birth, department));
     }
 
     @Override
     public Employee update(int id, EmployeeDTO employee) {
         Employee employee2Update = getOne(id);
+        Department department = null;
         if (employee2Update != null) {
+            if (employee.department != null && employee.department.id> 0) {
+                Optional<Department> persistedDepartment = departmentRepository.findById(employee.department.id);
+                if (persistedDepartment.isPresent())
+                    department = persistedDepartment.get();
+            }
             employee2Update.setIdentification(employee.identification);
             employee2Update.setFullname(employee.fullname);
             employee2Update.setBirth(employee.birth);
-            employee2Update.setDepartment(employee.department);
+            employee2Update.setDepartment(department);
             return employeeRepository.save(employee2Update);
         }
         return null;

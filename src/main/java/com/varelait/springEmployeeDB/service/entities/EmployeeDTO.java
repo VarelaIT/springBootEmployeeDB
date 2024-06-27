@@ -19,7 +19,7 @@ public class EmployeeDTO {
     public String fullname;
     @NotNull
     public Date birth;
-    public Department department;
+    public DepartmentDTO department;
 
     /*
     public EmployeeDTO(String identification, String fullname, String birth) throws ParseException {
@@ -27,7 +27,7 @@ public class EmployeeDTO {
     }
      */
 
-    public EmployeeDTO(String identification, String fullname, String birth, Department department) throws ParseException {
+    public EmployeeDTO(String identification, String fullname, String birth, DepartmentDTO department) throws ParseException {
         this.identification = identification;
         this.fullname = fullname;
         this.birth = new java.sql.Date(formatter.parse(birth).getTime());

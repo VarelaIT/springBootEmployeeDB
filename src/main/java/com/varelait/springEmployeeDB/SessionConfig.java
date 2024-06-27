@@ -15,9 +15,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJdbcHttpSession
+//@EnableJdbcHttpSession
 public class SessionConfig {
 
+    /*
     private final DataSource dataSource;
     private final PlatformTransactionManager transactionManager;
 
@@ -32,4 +33,5 @@ public class SessionConfig {
         TransactionOperations transactionOperations = new TransactionTemplate(transactionManager);
         return new JdbcIndexedSessionRepository(jdbcOperations, transactionOperations);
     }
+    */
 }

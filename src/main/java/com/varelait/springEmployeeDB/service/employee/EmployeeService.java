@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +28,14 @@ public class EmployeeService extends Service implements IEmployeeService{
     @Override
     public Employee create(EmployeeDTO employee) {
         Department department = null;
-        if (employee.department != null && employee.department.id> 0) {
-            Optional<Department> persistedDepartment = departmentRepository.findById(employee.department.id);
-            if (persistedDepartment.isPresent())
-                department = persistedDepartment.get();
+        if (employee.department != null){
+            if (employee.department.id> 0) {
+                Optional<Department> persistedDepartment = departmentRepository.findById(employee.department.id);
+                if (persistedDepartment.isPresent())
+                    department = persistedDepartment.get();
+            } else {
+                department = new Department(employee.department.department, employee.department.description);
+            }
         }
         return employeeRepository.save(new Employee(employee.identification, employee.fullname, employee.birth, department));
     }

@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 
 public class PaymentDTO {
 
-    public static DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd H:i:s");
+    public static DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public int id = 0;
     public Date date;
@@ -17,7 +17,7 @@ public class PaymentDTO {
     public float amount;
     public int employeeId;
 
-    public PaymentDTO () {}
+    public PaymentDTO(){}
     public PaymentDTO (String date, float salary, float amount, int employeeId) throws ParseException {
         this.date = new Date(formatter.parse(date).getTime());
         this.salary = salary;

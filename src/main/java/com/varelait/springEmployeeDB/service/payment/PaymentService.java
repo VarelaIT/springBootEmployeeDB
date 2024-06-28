@@ -9,12 +9,14 @@ import com.varelait.springEmployeeDB.service.entities.PaymentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.Optional;
 
-public class PaymentService implements IPaymentService{
+@Service
+public class PaymentService extends com.varelait.springEmployeeDB.service.Service implements IPaymentService{
     private final IPaymentRepository paymentRepository;
     private final IEmployeeService employeeService;
     @Autowired
@@ -79,8 +81,13 @@ public class PaymentService implements IPaymentService{
     }
 
     @Override
-    public Page<Payment> get(Pageable pageable, String dateString) throws ParseException {
-        Date date = new Date(PaymentDTO.formatter.parse(dateString).getTime());
-        return paymentRepository.findByDateContaining(date, pageable);
+    public Page<Payment> get(Pageable pageable, String dateString){
+        try {
+            Date date = new Date(PaymentDTO.formatter.parse(dateString).getTime());
+            return paymentRepository.findByDateContaining(date, pageable);
+        } catch (Exception e){
+            logger.info("While getting payments by the date.\n\t" + e.getMessage());
+            return null;
+        }
     }
 }

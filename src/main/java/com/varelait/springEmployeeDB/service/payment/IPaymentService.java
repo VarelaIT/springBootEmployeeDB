@@ -14,5 +14,5 @@ public interface IPaymentService {
     Payment getOne(Long id);
     Page<Payment> get(Pageable pageable);
     Page<Payment> get(Pageable pageable, int employeeId);
-    Page<Payment> get(Pageable pageable, String date) throws ParseException;
+    Page<Payment> get(Pageable pageable, String date);
 }

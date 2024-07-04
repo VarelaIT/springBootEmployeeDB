@@ -1,5 +1,6 @@
 package com.varelait.springEmployeeDB.service.department;
 
+import com.varelait.springEmployeeDB.LoggerBase;
 import com.varelait.springEmployeeDB.persistence.IDepartmentRepository;
 import com.varelait.springEmployeeDB.service.entities.Department;
 import com.varelait.springEmployeeDB.service.entities.DepartmentDTO;

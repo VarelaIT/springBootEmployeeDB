@@ -6,7 +6,8 @@ import com.varelait.springEmployeeDB.service.entities.CompanyDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ICompanyService extends IService<Company, CompanyDTO, Integer>{
+public interface ICompanyService {
     Company create(CompanyDTO element);
+    Page<Company> list(Pageable pageable);
     Page<Company> getByCompany(String pattern, Pageable pageable);
 }

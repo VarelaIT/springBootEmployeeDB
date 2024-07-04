@@ -9,6 +9,9 @@ public class CompanyDTO {
     public String company;
     public String description;
 
+    public CompanyDTO(){
+    }
+
     public CompanyDTO(String company, String description){
         this.company = company;
         this.description = description;

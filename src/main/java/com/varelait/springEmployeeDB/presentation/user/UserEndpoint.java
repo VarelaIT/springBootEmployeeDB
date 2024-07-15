@@ -58,7 +58,7 @@ public class UserEndpoint {
     public ResponseEntity<List<UserResponse>> get(){
         var user = userService.get();
         HttpStatus status = StatusEval.object(user);
-        return new ResponseEntity<>(user, status);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

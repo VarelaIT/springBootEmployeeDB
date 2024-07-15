@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication()
 @ComponentScan("com.varelait")
-@EnableTransactionManagement
 public class SpringEmployeeDbApplication {
 
 	public static void main(String[] args) {

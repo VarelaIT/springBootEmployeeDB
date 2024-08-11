@@ -25,3 +25,5 @@ http get 127.0.0.1:8080/api/payment/by-date/2024-6-26
 
 echo "Getting payments by employeeId"
 http get 127.0.0.1:8080/api/payment/by-employee/1
+
+echo "Remember create the employees before setting the payments"

@@ -25,6 +25,7 @@ public class CompanyEndpoint {
     @PostMapping
     public ResponseEntity<Company> create(@RequestBody CompanyDTO companyDTO){
         Company company = service.create(companyDTO);
+
         HttpStatus status = StatusEval.object(company);
         return new ResponseEntity<>(company, status);
     }

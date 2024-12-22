@@ -2,19 +2,20 @@ package com.varelait.springEmployeeDB.service.employee;
 
 import com.varelait.springEmployeeDB.persistence.IDepartmentRepository;
 import com.varelait.springEmployeeDB.persistence.IEmployeeRepository;
-import com.varelait.springEmployeeDB.service.Service;
+import com.varelait.springEmployeeDB.service.BaseService;
 import com.varelait.springEmployeeDB.service.entities.Department;
 import com.varelait.springEmployeeDB.service.entities.Employee;
 import com.varelait.springEmployeeDB.service.entities.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@org.springframework.stereotype.Service
-public class EmployeeService extends Service implements IEmployeeService{
+@Service
+public class EmployeeService extends BaseService implements IEmployeeService{
 
     private final IEmployeeRepository employeeRepository;
     private final IDepartmentRepository departmentRepository;

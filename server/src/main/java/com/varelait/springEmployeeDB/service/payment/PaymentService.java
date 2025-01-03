@@ -1,6 +1,7 @@
 package com.varelait.springEmployeeDB.service.payment;
 
 import com.varelait.springEmployeeDB.persistence.IPaymentRepository;
+import com.varelait.springEmployeeDB.service.BaseService;
 import com.varelait.springEmployeeDB.service.employee.EmployeeService;
 import com.varelait.springEmployeeDB.service.employee.IEmployeeService;
 import com.varelait.springEmployeeDB.service.entities.Employee;
@@ -12,11 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.text.ParseException;
 import java.util.Optional;
 
 @Service
-public class PaymentService extends com.varelait.springEmployeeDB.service.Service implements IPaymentService{
+public class PaymentService extends BaseService implements IPaymentService{
     private final IPaymentRepository paymentRepository;
     private final IEmployeeService employeeService;
     @Autowired

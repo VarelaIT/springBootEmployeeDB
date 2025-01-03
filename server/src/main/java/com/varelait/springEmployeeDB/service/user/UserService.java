@@ -1,24 +1,27 @@
 package com.varelait.springEmployeeDB.service.user;
 
 import com.varelait.springEmployeeDB.persistence.IUserRepository;
-import com.varelait.springEmployeeDB.service.Service;
+import com.varelait.springEmployeeDB.service.BaseService;
 import com.varelait.springEmployeeDB.service.entities.UserEntity;
 import com.varelait.springEmployeeDB.service.entities.UserDTO;
 import com.varelait.springEmployeeDB.service.entities.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@org.springframework.stereotype.Service
-public class UserService extends Service implements IUserService {
-    private final IUserRepository userRepository;
+@Service
+public class UserService extends BaseService implements IUserService, UserDetailsService {
 
     @Autowired
-    public UserService(IUserRepository userRepository){
-        this.userRepository = userRepository;
-    }
+    private IUserRepository userRepository;
+
 
     private UserEntity findByEmail(String email){
        return userRepository.findByEmail(email);
@@ -104,4 +107,9 @@ public class UserService extends Service implements IUserService {
         return response;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = findByEmail(username);
+        return new User(user.getEmail(), user.getHash(), new ArrayList<>());
+    }
 }

@@ -1,21 +1,18 @@
 package com.varelait.springEmployeeDB.service.company;
 
 import com.varelait.springEmployeeDB.persistence.ICompanyRepository;
-import com.varelait.springEmployeeDB.service.Service;
+import com.varelait.springEmployeeDB.service.BaseService;
 import com.varelait.springEmployeeDB.service.entities.Company;
 import com.varelait.springEmployeeDB.service.entities.CompanyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
-public class CompanyService extends Service implements ICompanyService{
-    ICompanyRepository companyRepository;
-
+@Service
+public class CompanyService extends BaseService implements ICompanyService{
     @Autowired
-    public CompanyService(ICompanyRepository companyRepository){
-        this.companyRepository = companyRepository;
-    }
+    private ICompanyRepository companyRepository;
 
     @Override
     public Company create(CompanyDTO element){

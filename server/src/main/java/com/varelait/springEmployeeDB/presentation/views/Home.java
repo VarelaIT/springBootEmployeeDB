@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.http.HttpResponse;
 
+
 @RestController
 @RequestMapping("/welcome")
 public class Home {
 
     @GetMapping
     public ResponseEntity<String> homeView(){
-        return new ResponseEntity<>("<h1>Welcome!</h1>", HttpStatus.OK);
+        String body = "<h1>Welcome!</h1>";
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
 }

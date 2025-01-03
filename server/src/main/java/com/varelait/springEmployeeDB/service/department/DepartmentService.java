@@ -2,6 +2,7 @@ package com.varelait.springEmployeeDB.service.department;
 
 import com.varelait.springEmployeeDB.LoggerBase;
 import com.varelait.springEmployeeDB.persistence.IDepartmentRepository;
+import com.varelait.springEmployeeDB.service.BaseService;
 import com.varelait.springEmployeeDB.service.entities.Department;
 import com.varelait.springEmployeeDB.service.entities.DepartmentDTO;
 import jakarta.validation.Valid;
@@ -12,14 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DepartmentService extends com.varelait.springEmployeeDB.service.Service implements IDepartmentService{
-
-    private final IDepartmentRepository departmentRepository;
+public class DepartmentService extends BaseService implements IDepartmentService{
 
     @Autowired
-    public DepartmentService(IDepartmentRepository departmentRepository){
-        this.departmentRepository = departmentRepository;
-    }
+    private IDepartmentRepository departmentRepository;
+
 
     @Override
     public Optional<Department> delete(int id) {

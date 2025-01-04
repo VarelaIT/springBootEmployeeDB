@@ -31,7 +31,12 @@ public class SpringSecurityConfiguration {
                     .requestMatchers("/**").permitAll()
                     .anyRequest().permitAll()
         );
-        //.formLogin(withDefaults())
+        //custom form configuration
+        http.formLogin(form -> form
+            //path to form 
+            .loginPage("/session/login")
+            .permitAll()
+        );
          //.httpBasic(withDefaults());
         return http.build();
     }
@@ -49,8 +54,9 @@ public class SpringSecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserService();
+    public UserDetailsService userDetailsService(UserDatailsServiceImp userDetails) {
+        //return new UserService();
+        return userDetails;
     }
 
     @Bean

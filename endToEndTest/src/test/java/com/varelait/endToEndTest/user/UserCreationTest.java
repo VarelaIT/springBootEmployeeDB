@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Supplier;
+
+import javax.management.RuntimeErrorException;
+
 import static java.util.Map.entry;
 
 import org.json.JSONException;
@@ -13,8 +17,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.mockito.internal.junit.TestFinishedEvent;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -26,11 +31,11 @@ public class UserCreationTest {
 
     private final Map<String, Map<String, String>> emails = Map.ofEntries(
         entry("Ismael", Map.ofEntries(
-            entry("email", "ismael.varelait.com"),
+            entry("email", "ismael@varelait.com"),
             entry("password", "alfalfa")
         )),
         entry("Jose", Map.ofEntries(
-            entry("email", "jose.varelait.com"),
+            entry("email", "jose@varelait.com"),
             entry("password", "josecitorobles")
         ))
     );
@@ -38,7 +43,7 @@ public class UserCreationTest {
     UserResponse ismaelUsr = null;
     UserResponse joseUsr = null;
 
-    //private Logger logger = (Logger) LoggerFactory.getLogger(UserCreationTest.class); 
+    private static Logger logger= LoggerFactory.getLogger(UserCreationTest.class); 
     @BeforeAll
     void setup(){
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -59,26 +64,33 @@ public class UserCreationTest {
         UserResponse user = response.getBody();
         
         ismaelUsr = user;
-        System.out.println("ID: " + user.id() + "\nEmail: " + user.email());
+        logger.info("ID: " + user.id() + "\nEmail: " + user.email());
         assertNotNull(user);
     }
 
     @Test 
     void createValidUserTwo() throws JSONException{
 
-        Map<String, String> jose = emails.get("Ismael");
+        Map<String, String> jose = emails.get("Jose");
         JSONObject body= new JSONObject();
         body.put("email", jose.get("email"));
         body.put("password", jose.get("password"));
         HttpEntity<String> request = new HttpEntity<String>(body.toString(), headers);
+
+        try{
 
         ResponseEntity<UserResponse> response = new RestTemplate()
             .postForEntity("http://localhost:8080/api/user", request, UserResponse.class);
         UserResponse user = response.getBody();
         
         joseUsr = user;
-        System.out.println("ID: " + user.id() + "\nEmail: " + user.email());
+        logger.trace("ID: " + user.id() + "\nEmail: " + user.email());
         assertNotNull(user);
+        }catch(Error e){
+            logger.info(e.getMessage());
+            throw new RuntimeErrorException(e, "Test Failed");
+                
+        }
     }
 
 }

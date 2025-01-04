@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService extends BaseService implements IUserService, UserDetailsService {
+public class UserService extends BaseService implements IUserService {
 
     @Autowired
     private IUserRepository userRepository;
@@ -107,9 +107,4 @@ public class UserService extends BaseService implements IUserService, UserDetail
         return response;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = findByEmail(username);
-        return new User(user.getEmail(), user.getHash(), new ArrayList<>());
-    }
 }

@@ -29,16 +29,6 @@ import org.springframework.web.client.RestTemplate;
 @TestInstance(Lifecycle.PER_CLASS)
 public class UserCreationTest {
 
-    private final Map<String, Map<String, String>> emails = Map.ofEntries(
-        entry("Ismael", Map.ofEntries(
-            entry("email", "ismael@varelait.com"),
-            entry("password", "alfalfa")
-        )),
-        entry("Jose", Map.ofEntries(
-            entry("email", "jose@varelait.com"),
-            entry("password", "josecitorobles")
-        ))
-    );
     private HttpHeaders headers = new HttpHeaders();
     UserResponse ismaelUsr = null;
     UserResponse joseUsr = null;
@@ -53,10 +43,9 @@ public class UserCreationTest {
     @Test 
     void createValidUserOne() throws JSONException{
 
-        Map<String, String> ismael = emails.get("Ismael");
         JSONObject body= new JSONObject();
-        body.put("email", ismael.get("email"));
-        body.put("password", ismael.get("password"));
+        body.put("email", Credentials.USER1.email());
+        body.put("password", Credentials.USER1.password());
         HttpEntity<String> request = new HttpEntity<String>(body.toString(), headers);
 
         ResponseEntity<UserResponse> response = new RestTemplate()
@@ -71,10 +60,9 @@ public class UserCreationTest {
     @Test 
     void createValidUserTwo() throws JSONException{
 
-        Map<String, String> jose = emails.get("Jose");
         JSONObject body= new JSONObject();
-        body.put("email", jose.get("email"));
-        body.put("password", jose.get("password"));
+        body.put("email", Credentials.USER2.email());
+        body.put("password", Credentials.USER2.password());
         HttpEntity<String> request = new HttpEntity<String>(body.toString(), headers);
 
         try{

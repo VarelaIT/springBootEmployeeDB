@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.varelait.springEmployeeDB.service.entities.UserDTO;
 import com.varelait.springEmployeeDB.service.entities.UserResponse;
-import com.varelait.springEmployeeDB.service.user.UserService;
+import com.varelait.springEmployeeDB.service.user.IUserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -27,6 +27,9 @@ public class AuthorizationController {
     @Autowired
     AuthenticationManager authManager;
 
+    @Autowired
+    IUserService userService;
+
     @PostMapping
     public ResponseEntity<?> login(@RequestBody UserDTO user, HttpServletRequest request){
         try {
@@ -36,7 +39,8 @@ public class AuthorizationController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             if(authentication.isAuthenticated()){
                 request.getSession(true); //Trigger session creation
-                return new ResponseEntity<>(authentication.getAuthorities(), HttpStatus.OK);
+                UserResponse response = userService.find(user.email);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }else
                 throw new AuthenticationCredentialsNotFoundException("Unauthenticated.");
         } catch (Exception e) {

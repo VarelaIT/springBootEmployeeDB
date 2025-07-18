@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,10 +26,12 @@ import org.springframework.web.client.RestTemplate;
 @TestInstance(Lifecycle.PER_CLASS)
 public class UserLoginTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserLoginTest.class);
+
     private UserResponse user;
     private HttpHeaders headers = new HttpHeaders();
-    private String email = "info@varelait.com";
-    private String password = "chacarron";
+    private String email = "varela@varelait.com";
+    private String password = "varelait";
 
     @Test
     @Order(1)
@@ -59,12 +63,19 @@ public class UserLoginTest {
         body.put("password", password);
         HttpEntity<String> request = new HttpEntity<String>(body.toString(), headers);
 
+        try{
         ResponseEntity<UserResponse> response = new RestTemplate()
             .postForEntity("http://localhost:8080/api/login", request, UserResponse.class);
          
         var obj = response.getBody();
         var headers = response.getHeaders();
+        logger.info("response: " + obj.email() + ", " + obj.id());
         assertTrue(HttpStatus.OK.equals(response.getStatusCode()));
+        }catch(Exception e){
+            logger.error("Catch Login Error:::: ", e.getMessage());
+            System.err.println("Catch Login Error:::: " + e.getMessage());
+            assertTrue(false);
+        }
     }
 
 }

@@ -52,6 +52,7 @@ public class UserLoginTest {
     }
 
     @Test
+    @Order(2)
     void validUserLogin() throws JSONException{
         JSONObject body= new JSONObject();
         body.put("email", email);
